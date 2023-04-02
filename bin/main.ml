@@ -28,6 +28,8 @@ let () = print_endline (Serializer2.serialize stack_v2)
  * stack of stacks example using alternating serialization schemes
  * '[' and ']' for outer
  * '{' and '}' for inner
+ *
+ * NOTE: can be polymorphic over the inner Stack type too by making another functor
  *)
 module SoS = ListStack(struct type elt = StackImpl2.stack end)
 module StackImpl3 = MakeSerStack_v1(SoS)(Serializer2)
