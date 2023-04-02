@@ -1,11 +1,18 @@
 module type Stack = sig
-    type 'a stack
+    type elt
+    type stack
 
-    val mkEmpty : unit -> 'a stack
-    val push    : 'a stack -> 'a -> 'a stack
-    val pop     : 'a stack -> 'a stack * 'a option
+    val mkEmpty : unit -> stack
+    val push    : stack -> elt -> stack
+    val pop     : stack -> stack * elt option
 end
 
+module type StackElement = sig
+    type elt
+end
+
+open Serializable
 module type SerializableStack = sig
-    include Serializable.Serializable
+    include Serializable
+    include Stack
 end
