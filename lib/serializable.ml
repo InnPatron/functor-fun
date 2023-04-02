@@ -4,5 +4,6 @@ module type Serializable = sig
 end
 
 module Serializer(S: Serializable) = struct
+    type t  = S.t
     let serialize s = S.serialize s
 end
