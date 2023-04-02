@@ -35,14 +35,13 @@ module SoS = ListStack(struct type elt = StackImpl2.stack end)
 module StackImpl3 = MakeSerStack_v1(SoS)(Serializer2)
 module Serializer3 = Serializer(StackImpl3)
 
-let stack_v3 = SoS.mkEmpty()
-let stack_v3' = SoS.push (SoS.push stack_v3 stack_v2) (let (s, _) = StackImpl2.pop stack_v2 in s)
+let stack_v3 = SoS.push (SoS.push (SoS.mkEmpty()) stack_v2) (let (s, _) = StackImpl2.pop stack_v2 in s)
 
-let () = print_endline (String.cat "v3 = " (Serializer3.serialize stack_v3'))
+let () = print_endline (String.cat "v3 = " (Serializer3.serialize stack_v3))
 
-module SoS_Other = ListStack(struct type elt = StackImpl2.stack end)
-let stack_other = SoS_Other.mkEmpty()
 (*
+ * module SoS_Other = ListStack(struct type elt = StackImpl2.stack end)
+ * let stack_other = SoS_Other.mkEmpty()
  * ERROR: type checker cannot see that SoS_Other.stack = Serializer3.t; how to fix?
  * let () = print_endline (Serializer3.serialize stack_other)
  * let () = print_endline (StackImpl3.serialize stack_other)
@@ -62,7 +61,7 @@ module MakeExecutor(Inner: SerializableStack with type elt = int) = struct
     let result = OuterSerializer.serialize stack'
 end
 
-(* Results like stack_v3', but uses '[' and ']' everywhere *)
+(* Results like stack_v3, but uses '[' and ']' everywhere *)
 module Executor_v4 = MakeExecutor(StackImpl1)
 let () =  print_endline (String.cat "v4 = " Executor_v4.result)
 
