@@ -39,3 +39,11 @@ let stack_v3 = SoS.mkEmpty()
 let stack_v3' = SoS.push (SoS.push stack_v3 stack_v2) (let (s, _) = StackImpl2.pop stack_v2 in s)
 
 let () = print_endline (Serializer3.serialize stack_v3')
+
+module SoS_Other = ListStack(struct type elt = StackImpl2.stack end)
+let stack_other = SoS_Other.mkEmpty()
+(*
+ * ERROR: type checker cannot see that SoS_Other.stack = Serializer3.t; how to fix?
+ * let () = print_endline (Serializer3.serialize stack_other)
+ * let () = print_endline (StackImpl3.serialize stack_other)
+ *)
